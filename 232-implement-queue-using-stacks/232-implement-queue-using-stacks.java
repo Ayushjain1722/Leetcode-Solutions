@@ -1,43 +1,40 @@
 class MyQueue {
     Stack<Integer> s1;
     Stack<Integer> s2;
+    int front;
     
     public MyQueue() {
         s1 = new Stack<>();
         s2 = new Stack<>();
+        front = -1;
     }
     
     //Push in queue means that element is added at the last
     public void push(int x) {
+        if(s1.isEmpty()){
+            front = x;
+        }
         s1.push(x);
     }
     
     public int pop() {
-        
-        while(s1.size()!=1){
-            s2.push(s1.pop());
+        if(!s2.isEmpty()){
+            return s2.pop();
+        }else{
+            while(!s1.isEmpty()){
+                s2.push(s1.pop());
+            }
+            return s2.pop();
         }
-        int ans = s1.pop();
-        while(s2.size()!=0){
-            s1.push(s2.pop());
-        }
-        return ans;
     }
     
     public int peek() {
-        while(s1.size()!=1){
-            s2.push(s1.pop());
-        }
-        int ans = s1.peek();
-        while(s2.size()!=0){
-            s1.push(s2.pop());
-        }
-        return ans;
+        if(!s2.isEmpty())   return s2.peek();
+        return front;
     }
     
     public boolean empty() {
-        if(s1.size()==0)    return true;
-        return false;
+        return s1.isEmpty() && s2.isEmpty();
     }
 }
 
